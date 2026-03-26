@@ -459,8 +459,8 @@
       }
 
       .committee-photo img {
-        width: 100%;
-        height: 100%;
+        width: minmax(230px,1fr);
+        aspect-ratio: 1 / 1; /* Forces square */
         object-fit: cover; /* Crops to fill */
         object-position: center top; /* Adjust focus if needed */
         display: block;
