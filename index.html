@@ -1,861 +1,1032 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Q0 Workshop — HHAI 2026</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --ink:       #0f0e0d;
-      --paper:     #f5f2eb;
-      --accent:    #c8392b;
-      --accent2:   #1a3a5c;
-      --mid:       #6b6560;
-      --rule:      #d4cfc6;
-      --mono:      'DM Mono', monospace;
-      --serif:     'DM Serif Display', Georgia, serif;
-      --sans:      'DM Sans', sans-serif;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Q0 Workshop — HHAI 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --sand: #f7f3ed;
+        --sand-mid: #ede8e0;
+        --sand-deep: #d9d0c4;
+        --ink: #2b2825;
+        --ink-mid: #5c5650;
+        --ink-light: #8c867e;
+        --sage: #6b7f6e;
+        --sage-light: #e8ede9;
+        --rust: #9c5a3c;
+        --rust-light: #f5ece6;
+        --sky: #4a6d8c;
+        --sky-light: #e6eef4;
+        --serif: "Lora", Georgia, serif;
+        --sans: "Jost", system-ui, sans-serif;
+      }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
 
-    html { scroll-behavior: smooth; }
+      body {
+        background: var(--sand);
+        color: var(--ink);
+        font-family: var(--sans);
+        font-size: 16px;
+        line-height: 1.75;
+        font-weight: 300;
+      }
 
-    body {
-      background: var(--paper);
-      color: var(--ink);
-      font-family: var(--sans);
-      font-size: 16px;
-      line-height: 1.7;
-      overflow-x: hidden;
-    }
+      nav {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: rgba(247, 243, 237, 0.93);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--sand-deep);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 3rem;
+        height: 56px;
+      }
+      .nav-brand {
+        font-family: var(--serif);
+        font-size: 0.95rem;
+        font-style: italic;
+        color: var(--ink);
+        text-decoration: none;
+      }
+      .nav-brand em {
+        color: var(--rust);
+        font-style: normal;
+      }
+      .nav-links {
+        display: flex;
+        gap: 2.5rem;
+        list-style: none;
+      }
+      .nav-links a {
+        font-size: 0.76rem;
+        font-weight: 400;
+        letter-spacing: 0.09em;
+        text-transform: uppercase;
+        color: var(--ink-mid);
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+      .nav-links a:hover {
+        color: var(--rust);
+      }
 
-    /* ── NOISE TEXTURE OVERLAY ── */
-    body::before {
-      content: '';
-      position: fixed; inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 9999;
-      opacity: 0.5;
-    }
+      .hero {
+        min-height: 90vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 8rem 3rem 6rem;
+        max-width: 900px;
+        margin: 0 auto;
+      }
+      .hero-eyebrow {
+        font-size: 0.76rem;
+        font-weight: 400;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--sage);
+        margin-bottom: 2rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+      .hero-eyebrow::before {
+        content: "";
+        display: inline-block;
+        width: 32px;
+        height: 1px;
+        background: var(--sage);
+      }
+      .hero-title {
+        font-family: var(--serif);
+        font-size: clamp(2.8rem, 5.5vw, 4.4rem);
+        font-weight: 400;
+        line-height: 1.1;
+        margin-bottom: 0.5rem;
+      }
+      .hero-title em {
+        font-style: italic;
+        color: var(--rust);
+      }
+      .hero-subtitle {
+        font-family: var(--serif);
+        font-style: italic;
+        font-size: clamp(1.1rem, 2vw, 1.35rem);
+        color: var(--ink-mid);
+        margin-bottom: 3rem;
+        line-height: 1.5;
+      }
+      .hero-question {
+        border-left: 2px solid var(--sand-deep);
+        padding: 1.1rem 2rem;
+        margin-bottom: 3.5rem;
+        max-width: 56ch;
+      }
+      .hero-question p {
+        font-family: var(--serif);
+        font-style: italic;
+        font-size: 1.15rem;
+        color: var(--ink);
+        line-height: 1.65;
+      }
+      .hero-dates {
+        display: flex;
+        border: 1px solid var(--sand-deep);
+        background: white;
+        width: fit-content;
+      }
+      .hero-date-item {
+        padding: 1.1rem 2rem;
+        border-right: 1px solid var(--sand-deep);
+      }
+      .hero-date-item:last-child {
+        border-right: none;
+      }
+      .date-event {
+        font-size: 0.68rem;
+        font-weight: 400;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--ink-light);
+        margin-bottom: 0.3rem;
+      }
+      .date-val {
+        font-family: var(--serif);
+        font-size: 1rem;
+        color: var(--ink);
+      }
+      .hero-cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-top: 2.5rem;
+        background: var(--rust);
+        color: white;
+        font-size: 0.8rem;
+        font-weight: 400;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        text-decoration: none;
+        padding: 0.85rem 2rem;
+        transition:
+          background 0.2s,
+          transform 0.15s;
+        width: fit-content;
+      }
+      .hero-cta:hover {
+        background: #854d33;
+        transform: translateY(-1px);
+      }
 
-    /* ── NAV ── */
-    nav {
-      position: sticky; top: 0; z-index: 100;
-      background: var(--ink);
-      color: var(--paper);
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 2rem;
-      height: 52px;
-      border-bottom: 2px solid var(--accent);
-    }
-    .nav-brand {
-      font-family: var(--mono);
-      font-size: 0.8rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--paper);
-      text-decoration: none;
-      opacity: 0.9;
-    }
-    .nav-brand span { color: var(--accent); }
-    .nav-links { display: flex; gap: 2rem; list-style: none; }
-    .nav-links a {
-      font-family: var(--mono);
-      font-size: 0.72rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--paper);
-      text-decoration: none;
-      opacity: 0.7;
-      transition: opacity 0.2s;
-    }
-    .nav-links a:hover { opacity: 1; color: var(--accent); }
+      section {
+        padding: 6rem 0;
+        border-top: 1px solid var(--sand-deep);
+      }
+      .container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 0 3rem;
+      }
+      .section-label {
+        font-size: 0.7rem;
+        font-weight: 400;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--sage);
+        margin-bottom: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+      .section-label::before {
+        content: "";
+        display: inline-block;
+        width: 20px;
+        height: 1px;
+        background: var(--sage);
+      }
+      .section-title {
+        font-family: var(--serif);
+        font-size: 2rem;
+        font-weight: 400;
+        line-height: 1.2;
+        margin-bottom: 2.5rem;
+      }
 
-    /* ── HERO ── */
-    .hero {
-      min-height: 92vh;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      position: relative;
-      overflow: hidden;
-    }
-    .hero-left {
-      background: var(--ink);
-      color: var(--paper);
-      padding: 6rem 4rem 4rem;
-      display: flex; flex-direction: column; justify-content: center;
-      position: relative;
-    }
-    .hero-left::after {
-      content: '';
-      position: absolute; right: -1px; top: 0; bottom: 0;
-      width: 1px;
-      background: var(--accent);
-    }
-    .hero-eyebrow {
-      font-family: var(--mono);
-      font-size: 0.72rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 1.5rem;
-    }
-    .hero-q {
-      font-family: var(--serif);
-      font-style: italic;
-      font-size: clamp(2.8rem, 5vw, 4.5rem);
-      line-height: 1.05;
-      color: var(--paper);
-      margin-bottom: 0.5rem;
-    }
-    .hero-q span {
-      color: var(--accent);
-      font-style: normal;
-    }
-    .hero-subtitle {
-      font-family: var(--serif);
-      font-size: 1.3rem;
-      font-weight: 400;
-      color: rgba(245,242,235,0.6);
-      margin-top: 1.5rem;
-      max-width: 38ch;
-    }
-    .hero-meta {
-      margin-top: 3rem;
-      display: flex; flex-direction: column; gap: 0.5rem;
-    }
-    .hero-meta-item {
-      font-family: var(--mono);
-      font-size: 0.78rem;
-      letter-spacing: 0.06em;
-      color: rgba(245,242,235,0.5);
-    }
-    .hero-meta-item strong { color: var(--paper); }
+      .overview-text p {
+        font-size: 1rem;
+        color: var(--ink);
+        margin-bottom: 1.2rem;
+        max-width: 64ch;
+        line-height: 1.85;
+      }
+      .overview-text strong {
+        font-weight: 500;
+      }
+      .audience-chips {
+        margin-top: 2.5rem;
+        padding-top: 2rem;
+        border-top: 1px solid var(--sand-deep);
+      }
+      .audience-label {
+        font-size: 0.7rem;
+        font-weight: 400;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--ink-light);
+        margin-bottom: 1rem;
+      }
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+      .chip {
+        font-size: 0.8rem;
+        font-weight: 300;
+        padding: 0.3rem 0.85rem;
+        border: 1px solid var(--sand-deep);
+        color: var(--ink-mid);
+        background: white;
+      }
 
-    .hero-right {
-      background: var(--paper);
-      padding: 6rem 4rem 4rem;
-      display: flex; flex-direction: column; justify-content: center;
-    }
-    .hero-right h2 {
-      font-family: var(--mono);
-      font-size: 0.72rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--mid);
-      margin-bottom: 2rem;
-    }
-    .callout-box {
-      border: 1.5px solid var(--ink);
-      padding: 2rem;
-      position: relative;
-    }
-    .callout-box::before {
-      content: 'Q0';
-      position: absolute; top: -0.85rem; left: 1.5rem;
-      background: var(--paper);
-      padding: 0 0.5rem;
-      font-family: var(--mono);
-      font-size: 0.7rem;
-      letter-spacing: 0.1em;
-      color: var(--accent);
-    }
-    .callout-quote {
-      font-family: var(--serif);
-      font-style: italic;
-      font-size: 1.25rem;
-      line-height: 1.5;
-      color: var(--ink);
-    }
-    .dates-grid {
-      margin-top: 3rem;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 0;
-      border: 1.5px solid var(--rule);
-    }
-    .date-cell {
-      padding: 1.2rem 1rem;
-      border-right: 1.5px solid var(--rule);
-      text-align: center;
-    }
-    .date-cell:last-child { border-right: none; }
-    .date-label {
-      font-family: var(--mono);
-      font-size: 0.65rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--mid);
-      margin-bottom: 0.4rem;
-    }
-    .date-value {
-      font-family: var(--serif);
-      font-size: 1.1rem;
-      color: var(--ink);
-    }
-    .date-value span {
-      display: block;
-      font-family: var(--mono);
-      font-size: 0.7rem;
-      color: var(--accent);
-      font-style: normal;
-    }
+      .topics-list {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1px;
+        background: var(--sand-deep);
+      }
+      .topic-item {
+        background: var(--sand);
+        padding: 1.4rem 1.6rem;
+        display: flex;
+        gap: 1rem;
+        align-items: flex-start;
+        transition: background 0.2s;
+      }
+      .topic-item:hover {
+        background: white;
+      }
+      .topic-num {
+        font-size: 0.65rem;
+        font-weight: 400;
+        letter-spacing: 0.06em;
+        color: var(--ink-light);
+        padding-top: 0.2rem;
+        flex-shrink: 0;
+        min-width: 26px;
+      }
+      .topic-name {
+        font-family: var(--serif);
+        font-size: 0.95rem;
+        font-weight: 500;
+        margin-bottom: 0.2rem;
+      }
+      .topic-desc {
+        font-size: 0.8rem;
+        color: var(--ink-light);
+        line-height: 1.5;
+      }
+      .topics-note {
+        margin-top: 1.5rem;
+        font-size: 0.86rem;
+        font-style: italic;
+        color: var(--ink-mid);
+      }
 
-    /* ── CTA BUTTON ── */
-    .btn-submit {
-      display: inline-block;
-      margin-top: 2rem;
-      background: var(--accent);
-      color: white;
-      font-family: var(--mono);
-      font-size: 0.78rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      text-decoration: none;
-      padding: 0.85rem 2rem;
-      border: none;
-      cursor: pointer;
-      transition: background 0.2s, transform 0.1s;
-    }
-    .btn-submit:hover { background: #a02d22; transform: translateY(-1px); }
+      .format-days {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1px;
+        background: var(--sand-deep);
+      }
+      .format-day {
+        background: var(--sand);
+        padding: 2.5rem;
+      }
+      .day-badge {
+        display: inline-block;
+        font-size: 0.68rem;
+        font-weight: 400;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--sage);
+        border: 1px solid rgba(107, 127, 110, 0.4);
+        padding: 0.2rem 0.7rem;
+        margin-bottom: 1rem;
+      }
+      .day-title {
+        font-family: var(--serif);
+        font-size: 1.15rem;
+        font-weight: 500;
+        margin-bottom: 0.2rem;
+      }
+      .day-note {
+        font-size: 0.78rem;
+        color: var(--ink-light);
+        margin-bottom: 1.5rem;
+      }
+      .day-activities {
+        list-style: none;
+      }
+      .day-activity {
+        font-size: 0.9rem;
+        color: var(--ink-mid);
+        padding: 0.55rem 0;
+        border-bottom: 1px solid var(--sand-deep);
+        display: flex;
+        align-items: baseline;
+        gap: 0.75rem;
+        line-height: 1.5;
+      }
+      .day-activity:last-child {
+        border-bottom: none;
+      }
+      .day-activity::before {
+        content: "";
+        display: inline-block;
+        width: 4px;
+        height: 4px;
+        background: var(--rust);
+        border-radius: 50%;
+        flex-shrink: 0;
+        margin-top: 0.5rem;
+      }
 
-    /* ── SECTIONS ── */
-    section {
-      padding: 5rem 0;
-      border-top: 1px solid var(--rule);
-    }
-    .container { max-width: 1100px; margin: 0 auto; padding: 0 3rem; }
-    .section-header {
-      display: flex; align-items: baseline; gap: 1.5rem;
-      margin-bottom: 3rem;
-    }
-    .section-num {
-      font-family: var(--mono);
-      font-size: 0.7rem;
-      letter-spacing: 0.1em;
-      color: var(--accent);
-    }
-    .section-title {
-      font-family: var(--serif);
-      font-size: 2.2rem;
-      line-height: 1.15;
-    }
+      .sub-intro {
+        font-size: 1rem;
+        max-width: 60ch;
+        margin-bottom: 2rem;
+        line-height: 1.85;
+      }
+      .sub-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 3.5rem;
+        align-items: start;
+      }
+      .sub-types-list {
+        list-style: none;
+        margin-bottom: 2rem;
+      }
+      .sub-type-item {
+        font-size: 0.9rem;
+        padding: 0.65rem 0;
+        border-bottom: 1px solid var(--sand-deep);
+        color: var(--ink-mid);
+        display: flex;
+        align-items: baseline;
+        gap: 0.75rem;
+        line-height: 1.5;
+      }
+      .sub-type-item::before {
+        content: "→";
+        font-size: 0.72rem;
+        color: var(--rust);
+        flex-shrink: 0;
+      }
+      .pub-note {
+        padding: 1.1rem 1.4rem;
+        background: var(--sage-light);
+        border-left: 2px solid var(--sage);
+        font-size: 0.86rem;
+        color: var(--ink-mid);
+        line-height: 1.65;
+      }
+      .timeline {
+        list-style: none;
+      }
+      .tl-item {
+        display: flex;
+        gap: 1.5rem;
+        padding: 1rem 0;
+        border-bottom: 1px solid var(--sand-deep);
+        align-items: baseline;
+      }
+      .tl-item:last-child {
+        border-bottom: none;
+      }
+      .tl-date {
+        font-family: var(--serif);
+        font-size: 0.95rem;
+        color: var(--rust);
+        min-width: 68px;
+      }
+      .tl-event {
+        font-size: 0.9rem;
+        color: var(--ink);
+      }
 
-    /* ── OVERVIEW ── */
-    .overview-grid {
-      display: grid;
-      grid-template-columns: 2fr 1fr;
-      gap: 4rem;
-      align-items: start;
-    }
-    .overview-body p {
-      font-size: 1.05rem;
-      color: var(--ink);
-      margin-bottom: 1.2rem;
-      max-width: 60ch;
-    }
-    .overview-body strong { color: var(--accent); font-weight: 500; }
-    .sidebar-label {
-      font-family: var(--mono);
-      font-size: 0.65rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--mid);
-      margin-bottom: 1rem;
-      padding-bottom: 0.5rem;
-      border-bottom: 1px solid var(--rule);
-    }
-    .pill-list { list-style: none; display: flex; flex-wrap: wrap; gap: 0.5rem; }
-    .pill {
-      font-family: var(--mono);
-      font-size: 0.68rem;
-      letter-spacing: 0.05em;
-      background: var(--ink);
-      color: var(--paper);
-      padding: 0.3rem 0.75rem;
-      white-space: nowrap;
-    }
+      .committee-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+        gap: 1px;
+        background: var(--sand-deep);
+      }
+      .committee-card {
+        background: var(--sand);
+        padding: 1.4rem;
+        transition: background 0.2s;
+      }
+      .committee-card:hover {
+        background: white;
+      }
+      .committee-name {
+        font-family: var(--serif);
+        font-size: 0.98rem;
+        font-weight: 500;
+        margin-bottom: 0.25rem;
+        line-height: 1.35;
+      }
+      .committee-affiliation {
+        font-size: 0.76rem;
+        color: var(--ink-light);
+        line-height: 1.5;
+      }
 
-    /* ── TOPICS ── */
-    .topics-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 0;
-      border: 1.5px solid var(--rule);
-    }
-    .topic-card {
-      padding: 1.8rem 1.6rem;
-      border-right: 1px solid var(--rule);
-      border-bottom: 1px solid var(--rule);
-      position: relative;
-      transition: background 0.2s;
-    }
-    .topic-card:hover { background: rgba(200,57,43,0.04); }
-    .topic-idx {
-      font-family: var(--mono);
-      font-size: 0.65rem;
-      color: var(--accent);
-      margin-bottom: 0.6rem;
-    }
-    .topic-name {
-      font-family: var(--sans);
-      font-size: 0.95rem;
-      font-weight: 500;
-      margin-bottom: 0.4rem;
-    }
-    .topic-desc {
-      font-size: 0.85rem;
-      color: var(--mid);
-      line-height: 1.5;
-    }
+      .why-body {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+        align-items: start;
+      }
+      .why-text p {
+        font-size: 1rem;
+        line-height: 1.85;
+        margin-bottom: 1.2rem;
+        color: var(--ink);
+      }
+      .why-goals {
+        list-style: none;
+      }
+      .why-goal {
+        padding: 0.85rem 0;
+        border-bottom: 1px solid var(--sand-deep);
+        font-size: 0.92rem;
+        color: var(--ink-mid);
+        display: flex;
+        gap: 1rem;
+        align-items: baseline;
+      }
+      .why-goal::before {
+        content: "//";
+        font-family: "Courier New", monospace;
+        font-size: 0.72rem;
+        color: var(--sage);
+        flex-shrink: 0;
+      }
+      .prelim-card {
+        padding: 2rem;
+        border: 1px solid #c8d9e6;
+        background: var(--sky-light);
+      }
+      .prelim-title {
+        font-size: 0.68rem;
+        font-weight: 400;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--sky);
+        margin-bottom: 0.75rem;
+      }
+      .prelim-card p {
+        font-size: 0.88rem;
+        color: var(--ink-mid);
+        margin-bottom: 1rem;
+        line-height: 1.65;
+      }
+      .prelim-card a {
+        font-size: 0.82rem;
+        color: var(--sky);
+      }
 
-    /* ── FORMAT ── */
-    .format-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2px;
-      background: var(--rule);
-    }
-    .format-day {
-      background: var(--paper);
-      padding: 2.5rem;
-    }
-    .format-day-label {
-      font-family: var(--mono);
-      font-size: 0.7rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 0.4rem;
-    }
-    .format-day-title {
-      font-family: var(--serif);
-      font-size: 1.5rem;
-      margin-bottom: 1.5rem;
-    }
-    .agenda-list { list-style: none; }
-    .agenda-item {
-      display: flex;
-      gap: 1rem;
-      padding: 0.7rem 0;
-      border-bottom: 1px solid var(--rule);
-      font-size: 0.92rem;
-    }
-    .agenda-item:last-child { border-bottom: none; }
-    .agenda-bullet {
-      width: 6px; height: 6px;
-      background: var(--accent);
-      border-radius: 50%;
-      flex-shrink: 0;
-      margin-top: 0.55rem;
-    }
+      footer {
+        background: var(--ink);
+        color: rgba(247, 243, 237, 0.45);
+        padding: 3rem;
+        font-size: 0.82rem;
+        line-height: 1.85;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        border-top: none;
+      }
+      footer strong {
+        color: rgba(247, 243, 237, 0.8);
+        font-weight: 400;
+      }
+      footer a {
+        color: var(--rust);
+        text-decoration: none;
+        opacity: 0.9;
+      }
+      .footer-brand {
+        font-family: var(--serif);
+        font-style: italic;
+        font-size: 1.1rem;
+        color: rgba(247, 243, 237, 0.65);
+        margin-bottom: 0.5rem;
+      }
 
-    /* ── SUBMISSIONS ── */
-    .submission-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
-    }
-    .sub-types { list-style: none; }
-    .sub-type {
-      padding: 1rem 0;
-      border-bottom: 1px solid var(--rule);
-      font-size: 0.95rem;
-      display: flex; align-items: baseline; gap: 0.75rem;
-    }
-    .sub-type::before {
-      content: '→';
-      font-family: var(--mono);
-      color: var(--accent);
-      font-size: 0.8rem;
-    }
-    .sub-note {
-      margin-top: 2rem;
-      padding: 1.25rem 1.5rem;
-      background: var(--ink);
-      color: var(--paper);
-    }
-    .sub-note p {
-      font-size: 0.9rem;
-      line-height: 1.6;
-    }
-    .sub-note strong { color: var(--accent); }
-    .sub-right h3 {
-      font-family: var(--mono);
-      font-size: 0.7rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--mid);
-      margin-bottom: 1.5rem;
-    }
-    .timeline { list-style: none; }
-    .timeline-item {
-      display: flex; gap: 1.5rem;
-      padding: 1rem 0;
-      border-left: 2px solid var(--rule);
-      padding-left: 1.5rem;
-      position: relative;
-    }
-    .timeline-item::before {
-      content: '';
-      position: absolute; left: -5px; top: 1.3rem;
-      width: 8px; height: 8px;
-      background: var(--paper);
-      border: 2px solid var(--accent);
-      border-radius: 50%;
-    }
-    .timeline-date {
-      font-family: var(--mono);
-      font-size: 0.75rem;
-      color: var(--accent);
-      min-width: 80px;
-      padding-top: 0.1rem;
-    }
-    .timeline-event {
-      font-size: 0.92rem;
-      font-weight: 500;
-    }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(14px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .hero > * {
+        animation: fadeIn 0.9s ease both;
+      }
+      .hero .hero-eyebrow {
+        animation-delay: 0.05s;
+      }
+      .hero .hero-title {
+        animation-delay: 0.15s;
+      }
+      .hero .hero-subtitle {
+        animation-delay: 0.25s;
+      }
+      .hero .hero-question {
+        animation-delay: 0.38s;
+      }
+      .hero .hero-dates {
+        animation-delay: 0.5s;
+      }
+      .hero .hero-cta {
+        animation-delay: 0.6s;
+      }
 
-    /* ── ORGANIZING COMMITTEE ── */
-    .committee-note {
-      font-size: 0.95rem;
-      color: var(--mid);
-      max-width: 55ch;
-      margin-bottom: 2rem;
-      font-style: italic;
-    }
-    .committee-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 1px;
-      background: var(--rule);
-    }
-    .committee-card {
-      background: var(--paper);
-      padding: 1.5rem;
-    }
-    .committee-role {
-      font-family: var(--mono);
-      font-size: 0.6rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 0.4rem;
-    }
-    .committee-name {
-      font-family: var(--serif);
-      font-size: 1.1rem;
-      margin-bottom: 0.25rem;
-    }
-    .committee-affiliation {
-      font-size: 0.78rem;
-      color: var(--mid);
-    }
-    .committee-placeholder {
-      background: repeating-linear-gradient(
-        -45deg,
-        transparent,
-        transparent 4px,
-        rgba(0,0,0,0.03) 4px,
-        rgba(0,0,0,0.03) 8px
-      );
-    }
-    .committee-placeholder .committee-name { color: var(--mid); font-style: italic; }
+      @media (max-width: 780px) {
+        nav {
+          padding: 0 1.5rem;
+        }
+        .nav-links {
+          gap: 1.25rem;
+        }
+        .container,
+        .hero {
+          padding-left: 1.5rem;
+          padding-right: 1.5rem;
+        }
+        .topics-list,
+        .format-days,
+        .sub-grid,
+        .why-body {
+          grid-template-columns: 1fr;
+        }
+        .hero-dates {
+          flex-direction: column;
+        }
+        .hero-date-item {
+          border-right: none;
+          border-bottom: 1px solid var(--sand-deep);
+        }
+        .hero-date-item:last-child {
+          border-bottom: none;
+        }
+        footer {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <a class="nav-brand" href="#">Question <em>Zero</em> — HHAI 2026</a>
+      <ul class="nav-links">
+        <li><a href="#overview">Overview</a></li>
+        <li><a href="#topics">Topics</a></li>
+        <li><a href="#submit">Submit</a></li>
+        <li><a href="#format">Format</a></li>
+        <li><a href="#committee">Committee</a></li>
+      </ul>
+    </nav>
 
-    /* ── WHY SECTION ── */
-    .why-block {
-      max-width: 680px;
-    }
-    .why-block p {
-      font-size: 1.05rem;
-      color: var(--ink);
-      margin-bottom: 1.2rem;
-    }
-    .why-list { list-style: none; margin-top: 1.5rem; }
-    .why-item {
-      padding: 1rem 0 1rem 1.5rem;
-      border-bottom: 1px solid var(--rule);
-      position: relative;
-      font-size: 0.97rem;
-    }
-    .why-item::before {
-      content: '//';
-      position: absolute; left: 0;
-      font-family: var(--mono);
-      font-size: 0.7rem;
-      color: var(--accent);
-      top: 1.05rem;
-    }
-    .prelim-link {
-      margin-top: 2rem;
-      padding: 1rem 1.5rem;
-      border-left: 3px solid var(--accent);
-      background: rgba(200,57,43,0.05);
-      font-size: 0.9rem;
-    }
-    .prelim-link a {
-      color: var(--accent2);
-      font-family: var(--mono);
-      font-size: 0.8rem;
-    }
-
-    /* ── FOOTER ── */
-    footer {
-      background: var(--ink);
-      color: rgba(245,242,235,0.5);
-      padding: 3rem;
-      font-family: var(--mono);
-      font-size: 0.72rem;
-      letter-spacing: 0.06em;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2rem;
-    }
-    footer strong { color: var(--paper); }
-    footer a { color: var(--accent); text-decoration: none; }
-
-    /* ── ANIMATIONS ── */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(24px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    .hero-left > * { animation: fadeUp 0.7s ease both; }
-    .hero-left .hero-eyebrow  { animation-delay: 0.1s; }
-    .hero-left .hero-q        { animation-delay: 0.2s; }
-    .hero-left .hero-subtitle { animation-delay: 0.35s; }
-    .hero-left .hero-meta     { animation-delay: 0.5s; }
-    .hero-right > *           { animation: fadeUp 0.7s ease both; animation-delay: 0.4s; }
-
-    /* ── RESPONSIVE ── */
-    @media (max-width: 860px) {
-      .hero { grid-template-columns: 1fr; min-height: auto; }
-      .hero-left { padding: 4rem 2rem 3rem; }
-      .hero-right { padding: 3rem 2rem 4rem; }
-      .hero-left::after { display: none; }
-      .overview-grid, .submission-grid, .format-grid { grid-template-columns: 1fr; gap: 2rem; }
-      .dates-grid { grid-template-columns: 1fr; }
-      .date-cell { border-right: none; border-bottom: 1px solid var(--rule); }
-      nav { padding: 0 1rem; }
-      .nav-links { gap: 1rem; }
-      .container { padding: 0 1.5rem; }
-      footer { grid-template-columns: 1fr; }
-    }
-  </style>
-</head>
-<body>
-
-<!-- NAV -->
-<nav>
-  <a class="nav-brand" href="#"><span>Q0</span> — HHAI 2026</a>
-  <ul class="nav-links">
-    <li><a href="#overview">Overview</a></li>
-    <li><a href="#topics">Topics</a></li>
-    <li><a href="#submit">Submit</a></li>
-    <li><a href="#format">Format</a></li>
-    <li><a href="#committee">Committee</a></li>
-  </ul>
-</nav>
-
-<!-- HERO -->
-<section class="hero" style="border-top:none; padding:0;">
-  <div class="hero-left">
-    <p class="hero-eyebrow">HHAI 2026 Workshop · July 6–7</p>
-    <h1 class="hero-q">Question<br><span>Zero</span></h1>
-    <p class="hero-subtitle">Should We Build This AI System at All?</p>
-    <div class="hero-meta">
-      <div class="hero-meta-item"><strong>Co-located with</strong> HHAI 2026</div>
-      <div class="hero-meta-item"><strong>Format</strong> Full-day academic + policy half-day</div>
-      <div class="hero-meta-item"><strong>Submissions</strong> 2-page extended abstracts</div>
-    </div>
-  </div>
-  <div class="hero-right">
-    <h2>The Central Question</h2>
-    <div class="callout-box">
-      <p class="callout-quote">"Under what conditions should an AI system be adopted, if at all?"</p>
-    </div>
-    <div class="dates-grid">
-      <div class="date-cell">
-        <div class="date-label">Deadline</div>
-        <div class="date-value">May 1<span>2026</span></div>
+    <div class="hero">
+      <p class="hero-eyebrow">HHAI 2026 Workshop · July 6–7</p>
+      <h1 class="hero-title">Question <em>Zero</em></h1>
+      <p class="hero-subtitle">Should We Build This AI System at All?</p>
+      <div class="hero-question">
+        <p>
+          "Under what conditions should an AI system be adopted, if at all?"
+        </p>
       </div>
-      <div class="date-cell">
-        <div class="date-label">Notification</div>
-        <div class="date-value">May 29<span>2026</span></div>
+      <div class="hero-dates">
+        <div class="hero-date-item">
+          <div class="date-event">Submission deadline</div>
+          <div class="date-val">May 1, 2026</div>
+        </div>
+        <div class="hero-date-item">
+          <div class="date-event">Notification</div>
+          <div class="date-val">May 29, 2026</div>
+        </div>
+        <div class="hero-date-item">
+          <div class="date-event">Workshop</div>
+          <div class="date-val">July 6–7, 2026</div>
+        </div>
       </div>
-      <div class="date-cell">
-        <div class="date-label">Workshop</div>
-        <div class="date-value">Jul 6–7<span>2026</span></div>
-      </div>
+      <a href="#submit" class="hero-cta"> Submit an abstract &nbsp;→ </a>
     </div>
-    <a href="#submit" class="btn-submit">Submit a Paper →</a>
-  </div>
-</section>
 
-<!-- OVERVIEW -->
-<section id="overview">
-  <div class="container">
-    <div class="section-header">
-      <span class="section-num">01</span>
-      <h2 class="section-title">Overview</h2>
-    </div>
-    <div class="overview-grid">
-      <div class="overview-body">
-        <p>Many failures of deployed AI systems do not stem from technical limitations, but from premature or unjustified decisions to apply AI in the first place. This workshop introduces <strong>Question Zero (Q0)</strong> as a foundational inquiry into AI design.</p>
-        <p>We position Q0 as a <strong>pre-deployment safety constraint</strong>, shifting attention from downstream fixes — interpretability, auditing, alignment patches — to upstream design decisions: problem formulation, system scope, human roles, and institutional context.</p>
-        <p>The workshop focuses on <strong>hybrid human–AI systems</strong>, emphasising how early choices shape technical feasibility, ethical outcomes, and societal impact. We ask not just "can we build this?" but "should we?"</p>
+    <section id="overview">
+      <div class="container">
+        <p class="section-label">Overview</p>
+        <h2 class="section-title">A question before the question</h2>
+        <div class="overview-text">
+          <p>
+            Many failures of deployed AI systems do not stem from technical
+            limitations, but from premature or unjustified decisions to apply AI
+            in the first place. This workshop introduces
+            <strong>Question Zero (Q0)</strong> as a foundational inquiry into
+            AI design.
+          </p>
+          <p>
+            We position Q0 as a
+            <strong>pre-deployment safety constraint</strong>, shifting
+            attention from downstream fixes — interpretability, auditing,
+            alignment patches — to upstream design decisions: problem
+            formulation, system scope, human roles, and institutional context.
+          </p>
+          <p>
+            The workshop focuses on <strong>hybrid human–AI systems</strong>,
+            emphasising how early choices shape technical feasibility, ethical
+            outcomes, and societal impact. We ask not just "can we build this?"
+            but "should we?"
+          </p>
+        </div>
+        <div class="audience-chips">
+          <div class="audience-label">Who should attend</div>
+          <div class="chips">
+            <span class="chip">AI &amp; ML researchers</span>
+            <span class="chip">HHAI scholars</span>
+            <span class="chip">Practitioners</span>
+            <span class="chip">Policymakers</span>
+            <span class="chip">Regulators</span>
+            <span class="chip">Legal scholars</span>
+            <span class="chip">Ethicists</span>
+            <span class="chip">Social scientists</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="topics">
+      <div class="container">
+        <p class="section-label">Topics of Interest</p>
+        <h2 class="section-title">What we're exploring</h2>
+        <div class="topics-list">
+          <div class="topic-item">
+            <div class="topic-num">01</div>
+            <div>
+              <div class="topic-name">Question Zero (Q0)</div>
+              <div class="topic-desc">
+                Formalizing pre-deployment justification frameworks
+              </div>
+            </div>
+          </div>
+          <div class="topic-item">
+            <div class="topic-num">02</div>
+            <div>
+              <div class="topic-name">Problem Framing &amp; Scope</div>
+              <div class="topic-desc">
+                When is AI appropriate? Boundaries of beneficial application
+              </div>
+            </div>
+          </div>
+          <div class="topic-item">
+            <div class="topic-num">03</div>
+            <div>
+              <div class="topic-name">Human–AI Task Allocation</div>
+              <div class="topic-desc">
+                Oversight models, responsibility distribution, and control
+              </div>
+            </div>
+          </div>
+          <div class="topic-item">
+            <div class="topic-num">04</div>
+            <div>
+              <div class="topic-name">
+                Institutional &amp; Governance Context
+              </div>
+              <div class="topic-desc">
+                Accountability structures and regulatory frameworks
+              </div>
+            </div>
+          </div>
+          <div class="topic-item">
+            <div class="topic-num">05</div>
+            <div>
+              <div class="topic-name">Reversibility &amp; Exit Strategies</div>
+              <div class="topic-desc">
+                Withdrawal conditions, rollback, and sunset planning
+              </div>
+            </div>
+          </div>
+          <div class="topic-item">
+            <div class="topic-num">06</div>
+            <div>
+              <div class="topic-name">Lifecycle Implications</div>
+              <div class="topic-desc">
+                Constraints on auditing, explainability, and maintenance
+              </div>
+            </div>
+          </div>
+          <div class="topic-item">
+            <div class="topic-num">07</div>
+            <div>
+              <div class="topic-name">Evaluation of AI Proposals</div>
+              <div class="topic-desc">
+                Criteria beyond technical novelty and performance metrics
+              </div>
+            </div>
+          </div>
+          <div class="topic-item">
+            <div class="topic-num">08</div>
+            <div>
+              <div class="topic-name">Policy &amp; Regulation</div>
+              <div class="topic-desc">
+                Translating Q0 reasoning into governance and law
+              </div>
+            </div>
+          </div>
+          <div class="topic-item">
+            <div class="topic-num">09</div>
+            <div>
+              <div class="topic-name">Security Perspectives</div>
+              <div class="topic-desc">
+                Q0 from a security and threat-model lifecycle view
+              </div>
+            </div>
+          </div>
+          <div class="topic-item">
+            <div class="topic-num">10</div>
+            <div>
+              <div class="topic-name">Case Studies</div>
+              <div class="topic-desc">
+                Real-world failures and successes in AI deployment decisions
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="topics-note">
+          Topics above are suggestions. We strongly encourage submissions to
+          address Q0 directly for their specific case.
+        </p>
+      </div>
+    </section>
+
+    <section id="format">
+      <div class="container">
+        <p class="section-label">Workshop Format</p>
+        <h2 class="section-title">Highly interactive, by design</h2>
+        <div class="format-days">
+          <div class="format-day">
+            <div class="day-badge">Day 1 · July 6</div>
+            <div class="day-title">Academic &amp; Practitioner Focus</div>
+            <div class="day-note">Full day</div>
+            <ul class="day-activities">
+              <li class="day-activity">
+                Lightning talks — 5 minutes per contribution
+              </li>
+              <li class="day-activity">
+                Group-based analysis of real-world cases
+              </li>
+              <li class="day-activity">
+                Collaborative development of Q0 frameworks
+              </li>
+              <li class="day-activity">
+                Structured discussions and synthesis sessions
+              </li>
+            </ul>
+          </div>
+          <div class="format-day">
+            <div class="day-badge">Day 2 · July 7</div>
+            <div class="day-title">Policy-Focused</div>
+            <div class="day-note">Half day</div>
+            <ul class="day-activities">
+              <li class="day-activity">
+                Engagement with policymakers and regulators
+              </li>
+              <li class="day-activity">Expert panel discussion</li>
+              <li class="day-activity">
+                Translation into policy recommendations
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="submit">
+      <div class="container">
+        <p class="section-label">Call for Papers</p>
+        <h2 class="section-title">How to contribute</h2>
+        <p class="sub-intro">
+          We invite <strong>2-page extended abstracts</strong> offering a
+          narrow, situated perspective on Question Zero. All submissions are
+          reviewed for relevance, clarity, and contribution to workshop themes.
+        </p>
+        <div class="sub-grid">
+          <div>
+            <ul class="sub-types-list">
+              <li class="sub-type-item">
+                Case studies of AI deployment failures or successes
+              </li>
+              <li class="sub-type-item">
+                Conceptual or methodological frameworks
+              </li>
+              <li class="sub-type-item">Policy-oriented analyses</li>
+              <li class="sub-type-item">Empirical or interdisciplinary work</li>
+            </ul>
+            <div class="pub-note">
+              <strong>Post-workshop publication:</strong> Authors may opt to
+              contribute to a CEUR-WS open-access proceedings volume.
+            </div>
+            <a
+              href="mailto:workshop@example.com"
+              class="hero-cta"
+              style="margin-top: 1.5rem"
+            >
+              Submit an abstract &nbsp;→
+            </a>
+          </div>
+          <div>
+            <div
+              style="
+                font-size: 0.68rem;
+                font-weight: 400;
+                letter-spacing: 0.12em;
+                text-transform: uppercase;
+                color: var(--ink-light);
+                margin-bottom: 1rem;
+              "
+            >
+              Important dates
+            </div>
+            <ul class="timeline">
+              <li class="tl-item">
+                <span class="tl-date">May 1</span
+                ><span class="tl-event">Submission deadline</span>
+              </li>
+              <li class="tl-item">
+                <span class="tl-date">May 29</span
+                ><span class="tl-event">Acceptance notification</span>
+              </li>
+              <li class="tl-item">
+                <span class="tl-date">Jul 6–7</span
+                ><span class="tl-event">Workshop at HHAI 2026</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="committee">
+      <div class="container">
+        <p class="section-label">Organizing Committee</p>
+        <h2 class="section-title">Who we are</h2>
+        <div class="committee-grid">
+          <div class="committee-grid">
+            <div class="committee-card">
+              <div class="committee-role">Workshop Chair</div>
+              <div class="committee-name">Adam Dahlgren Lindström</div>
+              <div class="committee-affiliation">Umeå University</div>
+            </div>
+            <div class="committee-card">
+              <div class="committee-role">Organizer</div>
+              <div class="committee-name">Rachele Carli</div>
+              <div class="committee-affiliation">Umeå University</div>
+            </div>
+            <div class="committee-card">
+              <div class="committee-role">Organizer</div>
+              <div class="committee-name">Virginia Dignum</div>
+              <div class="committee-affiliation">Umeå University</div>
+            </div>
+            <div class="committee-card">
+              <div class="committee-role">Organizer</div>
+              <div class="committee-name">Bertilla Fabris</div>
+              <div class="committee-affiliation">Umeå University</div>
+            </div>
+            <div class="committee-card">
+              <div class="committee-role">Organizer</div>
+              <div class="committee-name">Maja Fjaestad</div>
+              <div class="committee-affiliation">Karolinska Institutet</div>
+            </div>
+            <div class="committee-card">
+              <div class="committee-role">Organizer</div>
+              <div class="committee-name">Janet Rafner</div>
+              <div class="committee-affiliation">
+                University of Southern Denmark
+              </div>
+            </div>
+            <div class="committee-card">
+              <div class="committee-role">Organizer</div>
+              <div class="committee-name">Jacob Sherson</div>
+              <div class="committee-affiliation">Aarhus University</div>
+            </div>
+            <div class="committee-card">
+              <div class="committee-role">Organizer</div>
+              <div class="committee-name">Tatjana Titareva</div>
+              <div class="committee-affiliation">Umeå University</div>
+            </div>
+            <div class="committee-card">
+              <div class="committee-role">Organizer</div>
+              <div class="committee-name">Jason Tucker</div>
+              <div class="committee-affiliation">
+                Institute for Futures Studies &amp; Umeå University
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="why">
+      <div class="container">
+        <p class="section-label">Motivation</p>
+        <h2 class="section-title">Why this workshop?</h2>
+        <div class="why-body">
+          <div class="why-text">
+            <p>
+              While much of AI research focuses on improving systems after they
+              are built, this workshop asks a more fundamental question. By
+              addressing Q0 before systems are deployed, we can prevent harm
+              before it occurs rather than patching it afterward.
+            </p>
+            <ul class="why-goals">
+              <li class="why-goal">
+                Prevent harmful or unnecessary AI deployments
+              </li>
+              <li class="why-goal">
+                Improve alignment with real-world human needs
+              </li>
+              <li class="why-goal">
+                Promote responsible, human-centred AI design
+              </li>
+            </ul>
+          </div>
+          <div>
+            <div class="prelim-card">
+              <div class="prelim-title">Preliminary material</div>
+              <p>
+                Explore the Q0 assessment tool developed ahead of this workshop
+                — a practical resource for reasoning through pre-deployment
+                decisions.
+              </p>
+              <a
+                href="https://aipolicylab.se/assessment-tool"
+                target="_blank"
+                rel="noopener"
+                >aipolicylab.se/assessment-tool →</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div>
+        <div class="footer-brand">Question Zero — HHAI 2026</div>
+        <div>Website: <a href="#">[insert URL]</a></div>
+        <div>
+          Contact: <a href="mailto:workshop@example.com">[insert email]</a>
+        </div>
       </div>
       <div>
-        <p class="sidebar-label">Who Should Attend</p>
-        <ul class="pill-list">
-          <li class="pill">AI &amp; ML Researchers</li>
-          <li class="pill">HHAI Scholars</li>
-          <li class="pill">Practitioners</li>
-          <li class="pill">Policymakers</li>
-          <li class="pill">Regulators</li>
-          <li class="pill">Legal Scholars</li>
-          <li class="pill">Ethicists</li>
-          <li class="pill">Social Scientists</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- TOPICS -->
-<section id="topics">
-  <div class="container">
-    <div class="section-header">
-      <span class="section-num">02</span>
-      <h2 class="section-title">Topics of Interest</h2>
-    </div>
-    <div class="topics-grid">
-      <div class="topic-card">
-        <div class="topic-idx">T-01</div>
-        <div class="topic-name">Question Zero (Q0)</div>
-        <div class="topic-desc">Formalizing pre-deployment justification frameworks</div>
-      </div>
-      <div class="topic-card">
-        <div class="topic-idx">T-02</div>
-        <div class="topic-name">Problem Framing &amp; Scope</div>
-        <div class="topic-desc">When is AI appropriate? Boundaries of beneficial application</div>
-      </div>
-      <div class="topic-card">
-        <div class="topic-idx">T-03</div>
-        <div class="topic-name">Human–AI Task Allocation</div>
-        <div class="topic-desc">Oversight models, responsibility distribution, and control</div>
-      </div>
-      <div class="topic-card">
-        <div class="topic-idx">T-04</div>
-        <div class="topic-name">Institutional &amp; Governance Context</div>
-        <div class="topic-desc">Accountability structures and regulatory frameworks</div>
-      </div>
-      <div class="topic-card">
-        <div class="topic-idx">T-05</div>
-        <div class="topic-name">Reversibility &amp; Exit Strategies</div>
-        <div class="topic-desc">Withdrawal conditions, rollback, and sunset planning</div>
-      </div>
-      <div class="topic-card">
-        <div class="topic-idx">T-06</div>
-        <div class="topic-name">Lifecycle Implications</div>
-        <div class="topic-desc">Constraints on auditing, explainability, and maintenance</div>
-      </div>
-      <div class="topic-card">
-        <div class="topic-idx">T-07</div>
-        <div class="topic-name">Evaluation of AI Proposals</div>
-        <div class="topic-desc">Criteria beyond technical novelty and performance metrics</div>
-      </div>
-      <div class="topic-card">
-        <div class="topic-idx">T-08</div>
-        <div class="topic-name">Policy &amp; Regulation</div>
-        <div class="topic-desc">Translating Q0 reasoning into governance and law</div>
-      </div>
-      <div class="topic-card">
-        <div class="topic-idx">T-09</div>
-        <div class="topic-name">Security Perspectives</div>
-        <div class="topic-desc">Q0 from a security and threat-model lifecycle view</div>
-      </div>
-      <div class="topic-card">
-        <div class="topic-idx">T-10</div>
-        <div class="topic-name">Case Studies</div>
-        <div class="topic-desc">Real-world failures and successes in AI deployment decisions</div>
-      </div>
-    </div>
-    <p style="margin-top:1.5rem; font-size:0.88rem; color:var(--mid); font-style:italic;">
-      Topics above are suggestions. We strongly encourage submissions to address Q0 directly for their specific case.
-    </p>
-  </div>
-</section>
-
-<!-- FORMAT -->
-<section id="format">
-  <div class="container">
-    <div class="section-header">
-      <span class="section-num">03</span>
-      <h2 class="section-title">Workshop Format</h2>
-    </div>
-    <div class="format-grid">
-      <div class="format-day">
-        <div class="format-day-label">Day 1 · July 6</div>
-        <div class="format-day-title">Academic &amp; Practitioner Focus</div>
-        <ul class="agenda-list">
-          <li class="agenda-item"><span class="agenda-bullet"></span><span>Lightning talks (5 minutes per contribution)</span></li>
-          <li class="agenda-item"><span class="agenda-bullet"></span><span>Group-based analysis of real-world cases</span></li>
-          <li class="agenda-item"><span class="agenda-bullet"></span><span>Collaborative development of Q0 frameworks</span></li>
-          <li class="agenda-item"><span class="agenda-bullet"></span><span>Structured discussions and synthesis sessions</span></li>
-        </ul>
-      </div>
-      <div class="format-day">
-        <div class="format-day-label">Day 2 · July 7</div>
-        <div class="format-day-title">Policy-Focused Half Day</div>
-        <ul class="agenda-list">
-          <li class="agenda-item"><span class="agenda-bullet"></span><span>Engagement with policymakers and regulators</span></li>
-          <li class="agenda-item"><span class="agenda-bullet"></span><span>Expert panel discussion</span></li>
-          <li class="agenda-item"><span class="agenda-bullet"></span><span>Translation into policy recommendations</span></li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- SUBMISSIONS -->
-<section id="submit">
-  <div class="container">
-    <div class="section-header">
-      <span class="section-num">04</span>
-      <h2 class="section-title">Submissions</h2>
-    </div>
-    <div class="submission-grid">
-      <div class="sub-left">
-        <p style="font-size:1.05rem; margin-bottom:1.5rem; max-width:48ch;">
-          We invite <strong>2-page extended abstracts</strong> offering a narrow, situated perspective on Question Zero. Contributions may include:
-        </p>
-        <ul class="sub-types">
-          <li class="sub-type">Case studies of AI deployment failures or successes</li>
-          <li class="sub-type">Conceptual or methodological frameworks</li>
-          <li class="sub-type">Policy-oriented analyses</li>
-          <li class="sub-type">Empirical or interdisciplinary work</li>
-        </ul>
-        <div class="sub-note">
-          <p><strong>Post-workshop publication:</strong> Authors may opt to contribute to a CEUR-WS open-access proceedings volume.</p>
+        <div>Co-located with <strong>HHAI 2026</strong></div>
+        <div>July 6–7, 2026</div>
+        <div style="margin-top: 0.75rem">
+          <a href="https://aipolicylab.se/assessment-tool"
+            >aipolicylab.se/assessment-tool</a
+          >
         </div>
-        <a href="mailto:workshop@example.com" class="btn-submit" style="margin-top:1.5rem; display:inline-block;">Submit Abstract →</a>
       </div>
-      <div class="sub-right">
-        <h3>Important Dates</h3>
-        <ul class="timeline">
-          <li class="timeline-item">
-            <span class="timeline-date">May 1</span>
-            <span class="timeline-event">Submission deadline</span>
-          </li>
-          <li class="timeline-item">
-            <span class="timeline-date">May 29</span>
-            <span class="timeline-event">Acceptance notification</span>
-          </li>
-          <li class="timeline-item">
-            <span class="timeline-date">Jul 6–7</span>
-            <span class="timeline-event">Workshop at HHAI 2026</span>
-          </li>
-        </ul>
-        <p style="margin-top:2rem; font-size:0.85rem; color:var(--mid);">
-          All submissions reviewed for relevance, clarity, and contribution to workshop themes.
-        </p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- COMMITTEE -->
-<section id="committee">
-  <div class="container">
-    <div class="section-header">
-      <span class="section-num">05</span>
-      <h2 class="section-title">Organizing Committee</h2>
-    </div>
-    <div class="committee-grid">
-      <div class="committee-card">
-        <div class="committee-role">Organizer</div>
-        <div class="committee-name">Rachele Carli</div>
-        <div class="committee-affiliation">Umeå University</div>
-      </div>
-      <div class="committee-card">
-        <div class="committee-role">Organizer</div>
-        <div class="committee-name">Jason Tucker</div>
-        <div class="committee-affiliation">Institute for Futures Studies &amp; Umeå University</div>
-      </div>
-      <div class="committee-card">
-        <div class="committee-role">Organizer</div>
-        <div class="committee-name">Virginia Dignum</div>
-        <div class="committee-affiliation">Umeå University</div>
-      </div>
-      <div class="committee-card">
-        <div class="committee-role">Organizer</div>
-        <div class="committee-name">Bertilla Fabris</div>
-        <div class="committee-affiliation">Umeå University</div>
-      </div>
-      <div class="committee-card">
-        <div class="committee-role">Organizer</div>
-        <div class="committee-name">Maja Fjaestad</div>
-        <div class="committee-affiliation">Karolinska Institutet</div>
-      </div>
-      <div class="committee-card">
-        <div class="committee-role">Organizer</div>
-        <div class="committee-name">Tatjana Titareva</div>
-        <div class="committee-affiliation">Umeå University</div>
-      </div>
-      <div class="committee-card">
-        <div class="committee-role">Organizer</div>
-        <div class="committee-name">Janet Rafner</div>
-        <div class="committee-affiliation">University of Southern Denmark</div>
-      </div>
-      <div class="committee-card">
-        <div class="committee-role">Organizer</div>
-        <div class="committee-name">Jacob Sherson</div>
-        <div class="committee-affiliation">Aarhus University</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- WHY -->
-<section id="why">
-  <div class="container">
-    <div class="section-header">
-      <span class="section-num">06</span>
-      <h2 class="section-title">Why This Workshop?</h2>
-    </div>
-    <div class="why-block">
-      <p>While much of AI research focuses on improving systems after they are built, this workshop asks a more fundamental question. By addressing Q0 before systems are deployed, we can prevent harm before it occurs rather than patching it afterward.</p>
-      <ul class="why-list">
-        <li class="why-item">Prevent harmful or unnecessary AI deployments</li>
-        <li class="why-item">Improve alignment with real-world human needs</li>
-        <li class="why-item">Promote responsible, human-centered AI design</li>
-      </ul>
-      <div class="prelim-link">
-        <p>Preliminary material and the Q0 assessment tool:</p>
-        <a href="https://aipolicylab.se/assessment-tool" target="_blank" rel="noopener">aipolicylab.se/assessment-tool →</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer>
-  <div>
-    <div style="margin-bottom:1rem;"><strong>Q0 Workshop — HHAI 2026</strong></div>
-    <div>Website: <a href="#">[insert URL]</a></div>
-    <div>Contact: <a href="mailto:workshop@example.com">[insert email]</a></div>
-  </div>
-  <div>
-    <div style="margin-bottom:0.5rem;">Co-located with <strong>HHAI 2026</strong></div>
-    <div>July 6–7, 2026</div>
-    <div style="margin-top:1rem;">Preliminary material: <a href="https://aipolicylab.se/assessment-tool">aipolicylab.se/assessment-tool</a></div>
-  </div>
-</footer>
-
-</body>
+    </footer>
+  </body>
 </html>
