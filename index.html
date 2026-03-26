@@ -454,17 +454,30 @@
       }
       .committee-photo {
         width: 100%;
-        aspect-ratio: 1 / 1;
+        aspect-ratio: 1 / 1; /* Forces square */
         overflow: hidden;
-        position: relative;
       }
+
       .committee-photo img {
         width: 100%;
         height: 100%;
-        object-fit: cover;
-        object-position: center top;
+        object-fit: cover; /* Crops to fill */
+        object-position: center top; /* Adjust focus if needed */
         display: block;
       }
+      <!-- .committee-photo { -->
+      <!--   width: 100%; -->
+      <!--   aspect-ratio: 1 / 1; -->
+      <!--   overflow: hidden; -->
+      <!--   position: relative; -->
+      <!-- } -->
+      <!-- .committee-photo img { -->
+      <!--   width: 100%; -->
+      <!--   height: 100%; -->
+      <!--   object-fit: cover; -->
+      <!--   object-position: center top; -->
+      <!--   display: block; -->
+      <!-- } -->
       .committee-photo-placeholder {
         width: 100%;
         height: 100%;
@@ -981,7 +994,7 @@
         <div class="committee-card">
           <div class="committee-photo">
             <!-- Replace src with: images/bertilla-fabris.jpg -->
-            <img src="images/bertilla.jpg" alt="Bertilla Fabris" />
+            <img src="images/bertilla.webp" alt="Bertilla Fabris" />
           </div>
           <div class="committee-info">
             <div class="committee-name">Bertilla Fabris</div>
